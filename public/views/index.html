@@ -1,0 +1,316 @@
+
+<div ng-controller="homeCntrl">
+
+	<div id="business_profile" ng-show="global.user.user_type!='admin'">
+
+		<div class="passcode" ng-show="!global.user.password && !global.user.facebook">
+			<div class="panel-body">
+                <form role="form" method="POST" ng-submit="setPassword()">
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <input type="password" ng-model="password" id="password" class="form-control input-sm" placeholder="Password" required />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <input type="password" ng-model="password_confirmation" id="password_confirmation" class="form-control input-sm" placeholder="Confirm Password" required />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+
+                            <div ng-show="!password_match" style="font-size: 13px;" class="alert alert-danger" role="alert">Please Confirm Your Password Correctly</div>
+                            <div ng-show="!password_condition_length" style="font-size: 13px;" class="alert alert-danger" role="alert">Your Password Length Should At Least 6</div>
+                            <div ng-show="!password_condition_number" style="font-size: 13px;" class="alert alert-danger" role="alert">Your Password Should Have At Least 1 Number</div>
+                            <div ng-show="!password_condition_alpha" style="font-size: 13px;" class="alert alert-danger" role="alert">Your Password Should Have At Least 1 Character</div>
+
+                        </div>
+
+                    </div>
+             
+                    <input type="submit" value="Set Passcode" class="btn btn-lg btn-info btn-block">
+
+                    
+                </form>
+            </div>
+
+		</div>
+
+
+	    <div class="bg-business-profile" ng-show="global.user.password || global.user.facebook">
+
+		      
+	      	<div class="container">
+
+	      
+	            <header class="bp-header">
+	                <div class="row">
+	                    <div class="col-lg-5 col-md-4 col-sm-3 col-xs-12">
+	                        <a href="#" class="profile-txtlogo">{{global.user.first_name}} {{global.user.last_name}} </a>
+	                    </div>
+	                    <div class="col-lg-7 col-md-8 col-sm-9 col-xs-12">
+	                        <p class="date-info">
+	                            <span><strong>Member Since {{global.user.joining_date | date:'longDate'}}</strong></span>
+	                            
+	                        </p>
+	                    </div>
+	                </div>
+	            </header><!--end header-->
+	            
+
+	            
+	            <section id="banner">
+	                
+	                <div class="row">
+	                	<div class="editProfile" ng-show="edit_profile">
+							<div class="panel-body">
+				                <form role="form" method="POST" enctype="multipart/form-data" ng-submit="editProfileDone()">
+
+				                    <div class="row">
+			                            <div class="col-xs-6 col-sm-6 col-md-6">
+			                                <div class="form-group">
+			                            		<input type="text" ng-model="global.user.first_name" class="form-control input-sm" placeholder="First Name" required />
+			                                </div>
+			                            </div>
+			                            <div class="col-xs-6 col-sm-6 col-md-6">
+			                                <div class="form-group">
+			                            		<input type="text" ng-model="global.user.last_name" class="form-control input-sm" placeholder="Last Name"  />
+			                                </div>
+			                            </div>
+
+			                        </div>
+
+			                        <div class="row">
+
+			                            <div class="col-xs-12 col-sm-12 col-md-12">
+			                                <div class="form-group">
+			                            		<input type="text" ng-model="global.user.user_name" class="form-control input-sm" placeholder="User Name" required />
+			                                </div>
+			                            </div>
+			                 
+			                        </div>
+			                        <div ng-show="user_name_exist" style="font-size: 13px;" class="alert alert-danger" role="alert">User name already exist.</div>
+
+
+			                        <div class="form-group">
+			                            <input type="email" ng-model="global.user.email" id="email" class="form-control input-sm" placeholder="Email Address" required />
+			                        </div>
+			                        <div ng-show="email_exist" style="font-size: 13px;" class="alert alert-danger" role="alert">Email address already exist.</div>
+
+			                        <div class="form-group">
+			                        	<p style="font-size: 15px;">Choose Banner Picture</p>
+			                            <input type="file" ng-model="file" class="form-control input-sm" file-change="onFilePISelect($event,files)"accept="image/*" />
+
+			                        </div>
+
+			                        <div class="form-group">
+			                        	<p style="font-size: 15px;">Choose Profile Picture</p>
+			                            <input type="file" ng-model="profile_image" class="form-control input-sm" file-change="onFilePCSelect($event,files)"accept="image/*" />
+
+			                        </div>
+				             
+				                    <input type="submit" value="Save" class="btn btn-lg btn-info btn-block">
+
+				                    
+				                </form>
+				            </div>
+
+						</div>
+	                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="edit_profile">
+	                        <ul class="bp-slider banner">
+	                            <li>
+	                                <img src="images/BAK-image-bar1.jpg" alt="banner" height="250" width="100%" />
+
+	                                <form role="form" method="POST" enctype="multipart/form-data">
+	                        			<input type="file" ng-model="file" file-change="onCoverPicChnage($event,files)"accept="image/*" height="250" width="100%">
+	                        			<input type="hidden" ng-model="global.user.user_name"/>
+	                        	 		<input type="hidden" ng-model="global.user.email" id="email"/>
+	                        	 		<input type="hidden" ng-model="global.user.first_name"/>
+	                        	 		<input type="hidden" ng-model="global.user.last_name"/>
+	                        		</form>
+
+	                                <a href="" class="edit-profile" ng-click="toggleEdit()"><img src="../images/compose.png" height="24" width="24"></a>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                </div><!--end slider-->
+	                
+	                <div class="row bp-menu-block" >
+	                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 profile-roundlogo">
+	                        <!--<a href="#">-->
+	                        <img src="images/BAK-testimonial-image.jpg" height="70" width="140"/> <!--images/bp-logo.png-->
+	                        <form role="form" method="POST" enctype="multipart/form-data">
+	                        	<input type="file" ng-model="profile_image" file-change="onProfilePicChnage($event,files)"accept="image/*">
+	                        	<input type="hidden" ng-model="global.user.user_name"/>
+	                        	 <input type="hidden" ng-model="global.user.email" id="email"/>
+	                        	 <input type="hidden" ng-model="global.user.first_name"/>
+	                        	 <input type="hidden" ng-model="global.user.last_name"/>
+	                        </form>
+	                        <!--</a>-->
+	                    </div>
+	                    
+	                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
+	                        <ul class="bp-menu">
+	                            <li><a href="#">About</a></li>
+	                            <li><a href="#">Videos</a></li>
+	                            <li><a href="#">Message</a></li>
+	                            <!--<li><a href="#">Subscriber</a></li>-->
+	                        </ul>                	
+	                    </div>
+	                    
+	                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+	                        <div class="bp-social pull-right">
+	                            <a href="#"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+	                            <a href="#"><img src="images/icon-socail.png" alt="icon-social" width="30" /></a>
+	                        </div>
+	                        
+	                    </div>
+	    
+	                </div><!--end bp-menu -->
+	                
+	                
+	            </section><!--end banner-->
+  
+	        </div>
+	    
+	    </div>	
+	    
+	  
+
+	</div>
+
+
+	<!--start of admin part-->
+	<div class="container-fluid main-container" style="margin-top: 2%; margin-bottom: 20%;" ng-show="global.user.user_type=='admin'" ng-init="getallUser()">
+		
+	    <div class="col-md-3 sidebar">
+	        <ul class="nav nav-pills nav-stacked">
+	            <li class="active"><a href="#">Manage User</a></li>
+	            <li><a href="#">Manage Category</a></li>
+	            
+	        </ul>
+	    </div>
+	    <div class="col-md-9 content">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">
+	                All User
+	            </div>
+	            <div class="panel-body">
+	               <table class="table table-hover">
+		               	<thead>
+			                <tr>
+			                  <th class="span4 sortable">
+			                    <span class="line"></span> First Name
+			                  </th>
+			                  <th class="span4 sortable">
+			                    <span class="line"></span> Last Name
+			                  </th>
+			                  <th class="span4 sortable">
+			                    <span class="line"></span> Email
+			                  </th>
+			                  <!-- <th class="span3 sortable">
+			                    <span class="line"></span>User Role
+			                  </th> -->
+			                  <th class="span4 sortable">
+			                    <span class="line"></span>Status
+			                  </th>
+			                  <th class="span4 sortable">
+			                    <span class="line"></span>Action
+			                  </th>
+
+			              	</tr>
+			               
+			            </thead>
+
+			            <tbody>
+
+			            	<tr ng-repeat="item in all_user" ng-show="item.user_type!='admin'">
+			            		<td>{{item.first_name}}</td>
+			            		<td>{{item.last_name}}</td>
+			            		<td>{{item.email}}</td>
+			            		<td ng-show="global.user.loginCount==0"><label class="label label-warning">Pending</label>
+			            		</td>
+			            		<td ng-show="global.user.loginCount>0"><label class="label label-success">Active</label>
+			            		</td>
+			            		<td>
+			            			<button class="btn btn-xs btn-primary" ng-click="resendActivationLink(item._id)">Resend Activation Link</button>
+			            			<button class="btn btn-xs btn-info" ng-click="viewUser(item._id)">View</button>
+			            			<button class="btn btn-xs btn-danger" ng-click="deleteUser(item._id)">Delete</button>
+			            		</td>
+			            	</tr>
+			            </tbody>
+
+					</table>
+	            </div>
+	        </div>
+	    </div>
+
+	    <!--start of view profile-->
+	    <div class="col-md-9 content pull-right" ng-show="view_user">
+	      
+            <header>
+                <div class="row">
+                    <div class="col-lg-5 col-md-4 col-sm-3 col-xs-12">
+                        <a href="#" class="profile-txtlogo">{{view_user.first_name}} {{view_user.last_name}} </a>
+                    </div>
+                    <div class="col-lg-7 col-md-8 col-sm-9 col-xs-12">
+                        <p class="date-info">
+                            <span><strong>Member Since {{view_user.joining_date | date:'longDate'}}</strong></span>
+                 
+                        </p>
+                    </div>
+                </div>
+            </header><!--end header-->
+            
+            
+            <section id="banner">
+                
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <ul class="bp-slider">
+                            <li>
+                                <img src="images/banner1.jpg" alt="banner" class="img-responsive" />
+                                
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--end slider-->
+              
+                 
+            </section><!--end banner-->
+            
+             
+        </div>
+        <!--end of view profile-->
+
+	    
+	</div>	
+
+	<!--end of admin part-->
+</div>
+
+ <!--Like Music Cleaver-->
+	        <section id="banner">
+	              <div class="span6">
+	                    Alhamdulillah, That Worked.. Content will be go
+	             </div>
+	             <p>&nbsp;</p>
+	             <div class="span6">
+	                  
+<div id="container" style="position: relative; width: 500px; height: 300px;"></div>
+<script>
+    var map = new Datamap({element: document.getElementById('container')});
+</script>
+	             </div>
+	       <p>&nbsp;</p>
+	             <div class="span6">
+	                    Alhamdulillah, That Worked.. Content will be go here.
+	             </div>
+	       <p>&nbsp;</p>
+	             <div class="span6">
+	                    Alhamdulillah, That Worked.. Content will be go here.
+	             </div>
+
+	        </section>
+        <!--Like Music Cleaver  End-->
