@@ -7,7 +7,7 @@ db.on('error', function (err) {
 console.log('connection error', err);
 });
 db.once('open', function () {
-console.log('Database was Connected For Shortlink Insertion And Redirecting');
+console.log('Database was Connected For Shortlink Insertion And Redirecting For keeping Accounts');
 });
  
 var Schema = mongoose.Schema;
